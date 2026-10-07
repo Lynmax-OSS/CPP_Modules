@@ -44,14 +44,15 @@ int	Span::shortestSpan()
 {
 	if (vec_size < 2)
 		throw VecSpanTooSmall();
+	std::vector<int> tmp = vec;
 	int currentSpan;
 	int shortestSpan;
 
-	sort(vec.begin(), vec.end());
-	shortestSpan = vec[1] - vec[0];
-	for (size_t i = 0; i + 1 < vec.size(); i++)
+	sort(tmp.begin(), tmp.end());
+	shortestSpan = tmp[1] - tmp[0];
+	for (size_t i = 0; i + 1 < tmp.size(); i++)
 	{
-		currentSpan = vec[i + 1] - vec[i];
+		currentSpan = tmp[i + 1] - tmp[i];
 		if (currentSpan < shortestSpan)
 			shortestSpan = currentSpan;
 	}
@@ -62,6 +63,10 @@ int Span::longestSpan()
 {
 	if (vec_size < 2)
 		throw VecSpanTooSmall();
-	
+	int span;
+	std::vector<int> tmp = vec;
+	sort(tmp.begin(), tmp.end());
+	span = tmp[tmp.size() - 1] - tmp[0];
+	return (span); 
 }
 
