@@ -4,20 +4,20 @@
 #include <deque>
 
 template <typename T, typename C = std::deque<T>>
-class	Mutantstack: public std::stack<T, C>
+class	MutantStack: public std::stack<T, C>
 {
 	public:
-		Mutantstack()
+		MutantStack()
 		{}
-		Mutantstack(const Mutantstack &other) std::stack<T, C>(other)
+		MutantStack(const MutantStack &other): std::stack<T, C>(other)
 		{}
-		Mutantstack& operator=(const Mutantstack &other)
+		MutantStack& operator=(const MutantStack &other)
 		{
 			if (this != &other)
 				std::stack<T, C>::operator=(other);
 			return (*this);
 		}
-		~Mutantstack()
+		~MutantStack()
 		{}
 		typedef typename C::iterator				iterator;
 		typedef typename C::const_iterator			const_iterator;
@@ -40,19 +40,19 @@ class	Mutantstack: public std::stack<T, C>
 		{
 			return (this->c.end());
 		}
-		reverse_iterator	begin()
+		reverse_iterator	rbegin()
 		{
 			return (this->c.rbegin());
 		}
-		reverse_iterator	end()
+		reverse_iterator	rend()
 		{
 			return (this->c.rend());
 		}
-		const_reverse_iterator	begin() const
+		const_reverse_iterator	rbegin() const
 		{
-			return (this-c.rbegin());
+			return (this->c.rbegin());
 		}
-		const_reverse_iterator	end() const
+		const_reverse_iterator	rend() const
 		{
 			return (this->c.rend());
 		}
