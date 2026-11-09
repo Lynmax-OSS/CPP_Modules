@@ -5,6 +5,7 @@
 # include <map>
 # include <fstream>
 # include <exception>
+# include <sstream>
 
 class	BitcoinExchange
 {
@@ -17,6 +18,8 @@ class	BitcoinExchange
 		~BitcoinExchange();
 		bool	loadDatabase(const std::string &Filepath);
 		bool	parseInput(const std::string &FilePath) const;
+		bool	findRecords(const std::string &dateStr, double &value) const;
 };
 
+bool	validValue(const std::string &value, double & nValue);
 #endif
