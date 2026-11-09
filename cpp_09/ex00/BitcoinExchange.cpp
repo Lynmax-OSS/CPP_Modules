@@ -78,20 +78,19 @@ static bool	validDate(const std::string &date)
 	return (true);
 }
 
-bool	validValue(const std::string &value, double & nValue)
+static int	validValue(const std::string &value, double & nValue)
 {
 	std::istringstream ss(value);
-	char	extra;
+	char	extra = 0;
 	ss >> nValue;
 	ss >> extra;
 	if (!nValue || extra)
-		return (false);
-	std::cout << extra << std::endl;
+		return (1);
 	if (nValue < 1)
-		return (false);
+		return (2);
 	else if (nValue > 1000)
-		return (false);
-	return (true);
+		return (3);
+	return (0);
 
 }
 
@@ -122,26 +121,31 @@ bool	BitcoinExchange::parseInput(const std::string &Filepath) const
 	while (std::getline(file, line))
 	{
 		size_t	pos = line.find(" | ");
-		if (pos + 3 == std::string::npos || pos == std::string::npos)
-			continue;
+		if (pos == std::string::npos)
+		{
+			std::cerr << "Error: bad input =>" << line << std::endl;
+			continue; 
+		}
 		std::string date = line.substr(0, pos);
 		std::string valueStr = line.substr(pos + 3, line.size());
 		double	value;
 		double	rate;
 		if (!validDate(date))
-		{
-			std::cerr << "invalid date input" << std::endl;
-			continue;
-		}
-		else if (!validValue(valueStr, value))
-		{
-			std::cerr << "invalid value input" << std::endl;
-			continue;
-		}
-		else if (!findRecords(date, rate))
-			std::cerr << "Input is older than data records" << std::endl;
+			std::cerr << "Error: bad input =>" << line << std::endl;
 		else
-			std::cout << date << "=>" << valueStr << "=" << value * rate << std::endl;
+		{
+			int status = validValue(valueStr, value); 
+			if (status == 1)
+				std::cerr << "Error: bad input =>" << line << std::endl;
+			else if (status == 2)
+				std::cerr << "Error: not a positive number." << std::endl;
+			else if (status == 3)
+				std::cerr << "Error: too large a number." << std::endl;
+			else if (!findRecords(date, rate))
+				std::cerr << "Input is older than data records" << std::endl;
+			else
+				std::cout << date << "=>" << valueStr << "=" << value * rate << std::endl;
+		}
 	}
 	return (true);
 }

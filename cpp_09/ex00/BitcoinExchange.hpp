@@ -20,6 +20,4 @@ class	BitcoinExchange
 		bool	parseInput(const std::string &FilePath) const;
 		bool	findRecords(const std::string &dateStr, double &value) const;
 };
-
-bool	validValue(const std::string &value, double & nValue);
 #endif
