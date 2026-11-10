@@ -8,13 +8,14 @@
 class RPN
 {
 	private:
-		std::stack<std::deque<int>> list;
+		std::stack<int> list;
 	public:
 		RPN();
 		RPN(const RPN &other);
 		RPN& operator=(const RPN &other);
 		~RPN();
 		int calculate(const std::string &line);
+		bool	parseInput(const std::string &line);
 };
 
 #endif

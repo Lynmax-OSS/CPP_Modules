@@ -4,10 +4,11 @@ int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cerr << "More than one string in input" << std::endl;
+		std::cerr << "Argument not in proper format" << std::endl;
 		return (1);
 	}
 	RPN rpn;
-	rpn.calculate(av[1]);
+	std::cout << rpn.calculate(av[1]) << std::endl;
+	
 	return (0);
 }

@@ -20,15 +20,59 @@ RPN&	RPN::operator=(const RPN &other)
 	return (*this);
 }
 
+
+
 int	RPN::calculate(const std::string &line)
 {
 	std::stringstream ss(line);
-	char token;
-	while (ss >> token)
+	std::string str;
+	int a;
+	int b;
+
+	while (ss >> str)
 	{
-		if (!std::isdigit(token) || token != '-' || token != '+' || token != '*' || token != '/')
+		if (str.size() == 1 && std::isdigit(str.c_str()[0]))
 		{
-			std::cerr << "Invalid character in string" << std::endl;
+			int tmp = str.c_str()[0] - '0';
+			list.push(tmp);
+		}
+		else if (str == "+" || str == "-" || str == "*" || str == "/")
+		{
+			if (list.size() < 2)
+			{
+				std::cerr << "less than 2 number for operation" << std::endl;
+				return (1);
+			}
+			b = list.top();
+			list.pop();
+			a = list.top();
+			list.pop();
+
+			switch (str.c_str()[0])
+			{
+				case '+':
+					list.push(a + b);
+					break;
+				case '-':
+					list.push(a - b);
+					break;
+				case '*':
+					list.push(a * b);
+					break;
+				case '/':
+					if (b == 0)
+					{
+						std::cerr << "Cannot divide by 0" << std::endl;
+						return (1);
+					}
+					list.push(a / b);
+			} 
+		}
+		else
+		{
+			std::cerr << "Invalid input in string " << str << std::endl;
+			return (1);
 		}
 	}
+	return (list.top());
 }
