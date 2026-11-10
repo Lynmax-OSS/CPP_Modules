@@ -38,9 +38,9 @@ int	RPN::calculate(const std::string &line)
 		}
 		else if (str == "+" || str == "-" || str == "*" || str == "/")
 		{
-			if (list.size() < 2)
+			if (list.size() != 2)
 			{
-				std::cerr << "less than 2 number for operation" << std::endl;
+				std::cerr << "only 2 elements can operate" << std::endl;
 				return (1);
 			}
 			b = list.top();
@@ -63,7 +63,7 @@ int	RPN::calculate(const std::string &line)
 					if (b == 0)
 					{
 						std::cerr << "Cannot divide by 0" << std::endl;
-						return (1);
+						return (0);
 					}
 					list.push(a / b);
 			} 
@@ -71,7 +71,7 @@ int	RPN::calculate(const std::string &line)
 		else
 		{
 			std::cerr << "Invalid input in string " << str << std::endl;
-			return (1);
+			return (-1);
 		}
 	}
 	return (list.top());
