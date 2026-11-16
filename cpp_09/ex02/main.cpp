@@ -11,6 +11,6 @@ int main(int ac, char **av)
 		iss << av[i] << " ";
 	if (!FJ.parseArgs(iss))
 		return (1);
-	FJ.mergeInsertionVec();
+	
 	return (0);
 }

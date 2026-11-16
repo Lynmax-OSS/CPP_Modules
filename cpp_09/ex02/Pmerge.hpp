@@ -4,7 +4,8 @@
 # include <iostream>
 # include <sstream>
 # include <vector>
-# include <deque> 
+# include <deque>
+# include <climits>
 
 class Pmerge
 {
@@ -17,7 +18,10 @@ class Pmerge
 		Pmerge& operator=(const Pmerge &other);
 		~Pmerge();
 		int	parseArgs(std::stringstream &ss);
-		int	mergeInsertionVec();
+		void	fordJohnsonVector(std::vector<int> &vec);
+		int	mergeInsertionVec(const std::vector<int> &vec);
+		void	fordJohnsonDeque(std::deque<int> &deq);
+		int	mergeInsertionVec(const std::deque<int> &deq);
 };
 
 #endif
