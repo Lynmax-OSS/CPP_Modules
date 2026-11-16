@@ -7,6 +7,15 @@
 # include <deque>
 # include <climits>
 
+template <typename C>
+struct ByValue
+{
+	const C& v;
+	ByValue(const C& vals) : v(vals) {}
+	bool operator()(int a, int b) const
+		{ return v[a] < v[b]; }
+};
+
 class Pmerge
 {
 	private:

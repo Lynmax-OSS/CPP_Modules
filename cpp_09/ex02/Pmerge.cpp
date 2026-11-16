@@ -31,6 +31,11 @@ static bool	isValidNumber(const std::string &str)
 	return (true);
 }
 
+static size_t	jacobstahl(size_t k)
+{
+	
+}
+
 int	Pmerge::parseArgs(std::stringstream &ss)
 {
 	long n;
@@ -97,5 +102,14 @@ void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &ve
 	main.push_back(partner[larger[0]]);
 	for (size_t i = 0; i < m; i++)
 		main.push_back(larger[i]);
+	size_t	pendCount = m + (odd ? 1 : 0);
+	ByValue<std::vector<int>> cmp(vec);
+
+	size_t	inserted = 0;
+	size_t	prevJ = 1;
+	for (size_t k = 3; prevJ < pendCount; ++k)
+	{
+		size_t curJ = ;
+	}
 	
 }
