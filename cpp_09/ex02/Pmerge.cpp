@@ -42,7 +42,7 @@ int	Pmerge::parseArgs(std::stringstream &ss)
 			std::cerr << "Error" << std::endl;
 			return (1);
 		}
-		n = std::atoi(str.c_str());
+		n = std::atol(str.c_str());
 		if (n < 0 || n > INT_MAX)
 		{
 			std::cerr << "Error" << std::endl;
@@ -70,10 +70,32 @@ void	Pmerge::fordJohnsonVector(std::vector<int> &vec)
 
 	for (size_t i = 0; i < vals.size(); i++)
 		ids.push_back(static_cast<int>(i));
-	
+	mergeInsertionVec(ids, vals);
 }
 
-int	Pmerge::mergeInsertionVec(const std::vector<int> &vec)
+void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &vec)
 {
-
+	size_t n = ids.size();
+	if (n < 2)
+		return;
+	bool	odd = (n % 2 != 0);
+	int straggler = odd ? ids[n - 1] : -1;
+	std::vector<int> larger;
+	std::vector<int> partner(vec.size());
+	for (size_t i = 0; i + 1 < n ; i+= 2)
+	{
+		int a = ids[i];
+		int b = ids[i + 1];
+		if (vec[a] < vec[b])
+			std::swap(a, b);
+		larger.push_back(a);
+		partner[a] = b;
+	}
+	mergeInsertionVec(larger, vec);
+	size_t m = larger.size();
+	std::vector<int> main;
+	main.push_back(partner[larger[0]]);
+	for (size_t i = 0; i < m; i++)
+		main.push_back(larger[i]);
+	
 }

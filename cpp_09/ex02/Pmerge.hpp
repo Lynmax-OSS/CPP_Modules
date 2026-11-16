@@ -19,9 +19,9 @@ class Pmerge
 		~Pmerge();
 		int	parseArgs(std::stringstream &ss);
 		void	fordJohnsonVector(std::vector<int> &vec);
-		int	mergeInsertionVec(const std::vector<int> &vec);
+		void	mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &vec);
 		void	fordJohnsonDeque(std::deque<int> &deq);
-		int	mergeInsertionVec(const std::deque<int> &deq);
+		void	mergeInsertionVec(std::deque<int> &ids, const std::deque<int> &deq);
 };
 
 #endif
