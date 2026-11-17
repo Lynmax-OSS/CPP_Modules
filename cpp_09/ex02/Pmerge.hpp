@@ -7,6 +7,7 @@
 # include <deque>
 # include <climits>
 # include <algorithm>
+# include <sys/time.h>
 
 template <typename C>
 struct ByValue
@@ -34,6 +35,18 @@ class Pmerge
 		void	mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &vec);
 		void	fordJohnsonDeque(std::deque<int> &deq);
 		void	mergeInsertionDeq(std::deque<int> &ids, const std::deque<int> &deq);
+		void	printElapsedTime(double _elapsedTimeVec, double _elapsedTimeDeq);
+		template<typename C>
+		void	printContainer(C &container, std::string state)
+		{
+			std::cout << state;
+				for (size_t i = 0; i < container.size(); i++)
+				std::cout << container[i] << " ";
+			std::cout << std::endl;
+		}
 };
+
+double	nowUs();
+
 
 #endif

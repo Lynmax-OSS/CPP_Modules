@@ -41,6 +41,21 @@ static bool	isValidNumber(const std::string &str)
 	return (true);
 }
 
+double	nowUs()
+{
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return (tv.tv_sec * 1000000 + tv.tv_usec);
+}
+
+void	Pmerge::printElapsedTime(double _elapsedTimeVec, double _elapsedTimeDeq)
+{
+	std::cout << "Time to process a range of " << vec.size()
+		<< " elements with std::vector : " << _elapsedTimeVec << std::endl;
+	std::cout << "Time to process a range of " << deq.size()
+		<< " elements with std::Deque : " << _elapsedTimeDeq << std::endl;
+}
+
 static size_t	jacobstahl(size_t k)
 {
 	size_t	a = 0;
@@ -79,10 +94,7 @@ int	Pmerge::parseArgs(std::stringstream &ss)
 		std::cerr << "Error" << std::endl;
 		return (1);
 	}
-	std::cout << "Before: ";
-	for (size_t i = 0; i < vec.size(); i++)
-		std::cout << vec[i] << " ";
-	std::cout << std::endl;
+	printContainer(vec, "Before: ");
 	return (0);
 }
 
@@ -90,16 +102,11 @@ void	Pmerge::fordJohnsonVector(std::vector<int> &vec)
 {
 	std::vector<int> vals = vec;
 	std::vector<int> ids;
-	std::cout << "reach Ford-Johnson" << std::endl;
 	for (size_t i = 0; i < vals.size(); i++)
 		ids.push_back(static_cast<int>(i));
 	mergeInsertionVec(ids, vals);
 	for (size_t i = 0; i < ids.size(); i++)
 		vec[i] = vals[ids[i]];
-	std::cout << "After: ";
-	for (size_t i = 0; i < vec.size(); i++)
-		std::cout << vec[i] << " ";
-	std::cout << std::endl;
 }
 
 void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &vec)
@@ -127,7 +134,7 @@ void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &ve
 	for (size_t i = 0; i < m; i++)
 		main.push_back(larger[i]);
 	size_t	pendCount = m + (odd ? 1 : 0);
-	ByValue<std::vector<int>> cmp(vec);
+	ByValue<std::vector<int> > cmp(vec);
 
 	size_t	inserted = 0;
 	size_t	prevJ = 1;
@@ -162,21 +169,16 @@ void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &ve
 
 void	Pmerge::fordJohnsonDeque(std::deque<int> &deq)
 {
-	std::vector<int> vals = deq;
-	std::vector<int> ids;
-	std::cout << "reach Ford-Johnson" << std::endl;
+	std::deque<int> vals = deq;
+	std::deque<int> ids;
 	for (size_t i = 0; i < vals.size(); i++)
 		ids.push_back(static_cast<int>(i));
 	mergeInsertionDeq(ids, vals);
 	for (size_t i = 0; i < ids.size(); i++)
 		deq[i] = vals[ids[i]];
-	std::cout << "After: ";
-	for (size_t i = 0; i < deq.size(); i++)
-		std::cout << deq[i] << " ";
-	std::cout << std::endl;
 }
 
-void	mergeInsertionDeq(std::deque<int> &ids, const std::deque<int> &deq)
+void	Pmerge::mergeInsertionDeq(std::deque<int> &ids, const std::deque<int> &deq)
 {
 	size_t n = ids.size();
 	if (n < 2)
@@ -194,14 +196,14 @@ void	mergeInsertionDeq(std::deque<int> &ids, const std::deque<int> &deq)
 		larger.push_back(a);
 		partner[a] = b;
 	}
-	mergeInsertionVec(larger, vec);
+	mergeInsertionDeq(larger, deq);
 	size_t m = larger.size();
 	std::deque<int> main;
 	main.push_back(partner[larger[0]]);
 	for (size_t i = 0; i < m; i++)
 		main.push_back(larger[i]);
 	size_t	pendCount = m + (odd ? 1 : 0);
-	ByValue<std::deque<int>> cmp(vec);
+	ByValue<std::deque<int> > cmp(deq);
 
 	size_t	inserted = 0;
 	size_t	prevJ = 1;
