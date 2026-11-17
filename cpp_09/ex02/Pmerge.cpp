@@ -33,7 +33,15 @@ static bool	isValidNumber(const std::string &str)
 
 static size_t	jacobstahl(size_t k)
 {
-	
+	size_t	a = 0;
+	size_t	b = 1;
+	for (size_t i = 0; i < k; i++)
+	{
+		size_t t = b + 2 * a;
+		a = b;
+		b = t;
+	}
+	return (a);
 }
 
 int	Pmerge::parseArgs(std::stringstream &ss)
