@@ -9,8 +9,9 @@ int main(int ac, char **av)
 
 	for (size_t i = 1; i < ac ; i++)
 		iss << av[i] << " ";
-	if (!FJ.parseArgs(iss))
+	if (FJ.parseArgs(iss))
 		return (1);
-	
+	FJ.fordJohnsonVector(FJ.getVector());
+	FJ.fordJohnsonDeque(FJ.getDeque());
 	return (0);
 }

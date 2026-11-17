@@ -21,6 +21,16 @@ Pmerge&	Pmerge::operator=(const Pmerge &other)
 Pmerge::~Pmerge()
 {}
 
+std::vector<int>&	Pmerge::getVector()
+{
+	return (vec);
+}
+
+std::deque<int>&	Pmerge::getDeque()
+{
+	return (deq);
+}
+
 static bool	isValidNumber(const std::string &str)
 {
 	for (size_t i = 0; i < str.size(); i++)
@@ -80,10 +90,16 @@ void	Pmerge::fordJohnsonVector(std::vector<int> &vec)
 {
 	std::vector<int> vals = vec;
 	std::vector<int> ids;
-
+	std::cout << "reach Ford-Johnson" << std::endl;
 	for (size_t i = 0; i < vals.size(); i++)
 		ids.push_back(static_cast<int>(i));
 	mergeInsertionVec(ids, vals);
+	for (size_t i = 0; i < ids.size(); i++)
+		vec[i] = vals[ids[i]];
+	std::cout << "After: ";
+	for (size_t i = 0; i < vec.size(); i++)
+		std::cout << vec[i] << " ";
+	std::cout << std::endl;
 }
 
 void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &vec)
@@ -117,7 +133,103 @@ void	Pmerge::mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &ve
 	size_t	prevJ = 1;
 	for (size_t k = 3; prevJ < pendCount; ++k)
 	{
-		size_t curJ = ;
+		size_t curJ = jacobstahl(k);
+		if (curJ > pendCount)
+			curJ = pendCount;
+		for (size_t j = curJ; j > prevJ; --j)
+		{
+			int id;
+			size_t	bound;
+			if (j <= m)
+			{
+				id = partner[larger[j - 1]];
+				bound = j + inserted;
+			}
+			else
+			{
+				id = straggler;
+				bound = main.size();
+			}
+			std::vector<int>::iterator end = main.begin() + bound; // this is to jump the base of the smaller 
+			std::vector<int>::iterator pos = std::lower_bound(main.begin(), end, id, cmp); // this is where binary search lays
+			main.insert(pos, id);
+			++inserted;
+		}
+		prevJ = curJ;
 	}
-	
+	ids = main; // this updates the ids to the sorted positions
+}
+
+void	Pmerge::fordJohnsonDeque(std::deque<int> &deq)
+{
+	std::vector<int> vals = deq;
+	std::vector<int> ids;
+	std::cout << "reach Ford-Johnson" << std::endl;
+	for (size_t i = 0; i < vals.size(); i++)
+		ids.push_back(static_cast<int>(i));
+	mergeInsertionDeq(ids, vals);
+	for (size_t i = 0; i < ids.size(); i++)
+		deq[i] = vals[ids[i]];
+	std::cout << "After: ";
+	for (size_t i = 0; i < deq.size(); i++)
+		std::cout << deq[i] << " ";
+	std::cout << std::endl;
+}
+
+void	mergeInsertionDeq(std::deque<int> &ids, const std::deque<int> &deq)
+{
+	size_t n = ids.size();
+	if (n < 2)
+		return;
+	bool	odd = (n % 2 != 0);
+	int straggler = odd ? ids[n - 1] : -1;
+	std::deque<int> larger;
+	std::deque<int> partner(deq.size());
+	for (size_t i = 0; i + 1 < n ; i+= 2)
+	{
+		int a = ids[i];
+		int b = ids[i + 1];
+		if (deq[a] < deq[b])
+			std::swap(a, b);
+		larger.push_back(a);
+		partner[a] = b;
+	}
+	mergeInsertionVec(larger, vec);
+	size_t m = larger.size();
+	std::deque<int> main;
+	main.push_back(partner[larger[0]]);
+	for (size_t i = 0; i < m; i++)
+		main.push_back(larger[i]);
+	size_t	pendCount = m + (odd ? 1 : 0);
+	ByValue<std::deque<int>> cmp(vec);
+
+	size_t	inserted = 0;
+	size_t	prevJ = 1;
+	for (size_t k = 3; prevJ < pendCount; ++k)
+	{
+		size_t curJ = jacobstahl(k);
+		if (curJ > pendCount)
+			curJ = pendCount;
+		for (size_t j = curJ; j > prevJ; --j)
+		{
+			int id;
+			size_t	bound;
+			if (j <= m)
+			{
+				id = partner[larger[j - 1]];
+				bound = j + inserted;
+			}
+			else
+			{
+				id = straggler;
+				bound = main.size();
+			}
+			std::deque<int>::iterator end = main.begin() + bound; // this is to jump the base of the smaller 
+			std::deque<int>::iterator pos = std::lower_bound(main.begin(), end, id, cmp); // this is where binary search lays
+			main.insert(pos, id);
+			++inserted;
+		}
+		prevJ = curJ;
+	}
+	ids = main; // this updates the ids to the sorted positions	
 }

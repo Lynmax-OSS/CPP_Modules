@@ -6,6 +6,7 @@
 # include <vector>
 # include <deque>
 # include <climits>
+# include <algorithm>
 
 template <typename C>
 struct ByValue
@@ -26,11 +27,13 @@ class Pmerge
 		Pmerge(const Pmerge &other);
 		Pmerge& operator=(const Pmerge &other);
 		~Pmerge();
+		std::vector<int>&	getVector();
+		std::deque<int>&		getDeque();
 		int	parseArgs(std::stringstream &ss);
 		void	fordJohnsonVector(std::vector<int> &vec);
 		void	mergeInsertionVec(std::vector<int> &ids, const std::vector<int> &vec);
 		void	fordJohnsonDeque(std::deque<int> &deq);
-		void	mergeInsertionVec(std::deque<int> &ids, const std::deque<int> &deq);
+		void	mergeInsertionDeq(std::deque<int> &ids, const std::deque<int> &deq);
 };
 
 #endif
