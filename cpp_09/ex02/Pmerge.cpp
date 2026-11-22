@@ -43,17 +43,17 @@ static bool	isValidNumber(const std::string &str)
 
 double	nowUs()
 {
-	struct timeval tv;
-	gettimeofday(&tv, NULL);
-	return (tv.tv_sec * 1000000 + tv.tv_usec);
+	struct timespec tv;
+	clock_gettime(CLOCK_MONOTONIC, &tv);
+	return (tv.tv_sec * 1000000.0 + tv.tv_nsec / 1000.0);
 }
 
 void	Pmerge::printElapsedTime(double _elapsedTimeVec, double _elapsedTimeDeq)
 {
 	std::cout << "Time to process a range of " << vec.size()
-		<< " elements with std::vector : " << _elapsedTimeVec << std::endl;
+		<< " elements with std::vector : " << std::fixed << std::setprecision(5) << _elapsedTimeVec << " us" << std::endl;
 	std::cout << "Time to process a range of " << deq.size()
-		<< " elements with std::Deque : " << _elapsedTimeDeq << std::endl;
+		<< " elements with std::Deque : " << std::fixed << std::setprecision(5) << _elapsedTimeDeq << " us" << std::endl;
 }
 
 static size_t	jacobstahl(size_t k)

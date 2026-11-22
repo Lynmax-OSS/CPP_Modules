@@ -7,7 +7,8 @@
 # include <deque>
 # include <climits>
 # include <algorithm>
-# include <sys/time.h>
+# include <iomanip>
+# include <time.h>
 
 template <typename C>
 struct ByValue
